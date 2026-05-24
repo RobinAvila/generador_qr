@@ -73,7 +73,6 @@
             flex: 1;
         }
 
-        /* Estilizado simple para los selectores de color nativos */
         input[type="color"] {
             width: 100%;
             height: 40px;
@@ -111,12 +110,11 @@
 
         #qrcode {
             padding: 15px;
-            background-color: transparent; /* El fondo lo maneja la librería interna */
+            background-color: transparent;
             border-radius: 8px;
             display: inline-block;
         }
 
-        /* Ocultar el botón de descarga hasta que haya un QR generado */
         #download-btn {
             background-color: #008CBA;
             margin-top: 15px;
@@ -134,7 +132,7 @@
     
     <div class="form-group">
         <label for="link">Pega abajo la URL:</label>
-        <input type="text" id="link" placeholder="http://..." value="https://">
+        <input type="text" id="link" placeholder="http://..." value="http://">
     </div>
 
     <div class="form-group color-pickers">
@@ -166,32 +164,28 @@
         const contenedorQR = document.getElementById('qrcode');
         const botonDescarga = document.getElementById('download-btn');
 
-        if (link === "") {
+        if (link === "" || link === "https://") {
             alert("Por favor, ingresa un enlace válido.");
             return;
         }
 
-        // Limpiar el QR anterior si existe
         contenedorQR.innerHTML = "";
 
-        // Creamos el nuevo código QR utilizando la librería
         qrInstancia = new QRCode(contenedorQR, {
             text: link,
             width: 256,
             height: 256,
-            colorDark: colorQR,      // Color de los módulos (el QR en sí)
-            colorLight: colorFondo,  // Color del fondo
-            correctLevel: QRCode.CorrectLevel.H // Alto nivel de corrección (ideal si los colores tienen poco contraste)
+            colorDark: colorQR,
+            colorLight: colorFondo,
+            correctLevel: QRCode.CorrectLevel.H
         });
 
-        // Mostramos el botón de descarga con un pequeño delay para asegurar que el elemento se renderizó
         setTimeout(() => {
             botonDescarga.style.display = "block";
         }, 100);
     }
 
     function descargarQR() {
-        // La librería genera una etiqueta <img> dentro del contenedor. Buscamos esa imagen.
         const img = document.querySelector('#qrcode img');
         
         if (img) {
